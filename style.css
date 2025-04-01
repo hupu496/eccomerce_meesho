@@ -145,7 +145,7 @@
         }
         /* filter */
         .filter-panel {
-            width: 250px;
+            /* width: 250px; */
             background-color: white;
             border-radius: 8px;
             padding: 20px;
