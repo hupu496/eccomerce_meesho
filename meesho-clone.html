@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meesho Clone</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Custom styles */
+       :root {
+            --light-pink: #FFE6E6;
+            --light-orange: #FFDAB9;
+            --white: #FFFFFF;
+            --pink: #FF85A2;
+            --orange: #FFA07A;
+            --gray: #f0f0f0;
+            --dark-gray: #333;
+        }
+        
+        body {
+            font-family: 'Mier Book', -apple-system, 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+              background: linear-gradient(135deg, var(--white) 0%, var(--light-pink) 50%, var(--light-orange) 100%);
+            
+        }
+        
+        .navbar {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-bar {
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        
+        .search-bar input {
+            border: none;
+            background-color: transparent;
+        }
+        
+        .search-bar i {
+            color: #999;
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .badge-notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--meesho-pink);
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 50%;
+        }
+        
+        .download-app-btn {
+            background-color: var(--meesho-pink);
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        
+        .category-menu {
+            border-bottom: 1px solid #eee;
+        }
+        
+        .category-menu .nav-link {
+            font-size: 14px;
+            padding: 10px 15px;
+            white-space: nowrap;
+        }
+        
+        .hero-banner {
+            background-color: var(--meesho-light-pink);
+        }
+        
+        .product-card {
+            border: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .product-card .card-title {
+            font-size: 14px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .product-price {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .discount {
+            color: #038d63;
+            font-size: 13px;
+        }
+        
+        .original-price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 12px;
+        }
+        
+        .free-delivery {
+            background-color: var(--meesho-gray);
+            color: #666;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+        }
+        
+        .rating {
+            background-color: #038d63;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .scrolling-wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .supplier-card {
+            min-width: 200px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+              display: flex;
+        }
+        /* filter */
+        .filter-panel {
+            width: 250px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+
+        .filter-heading {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-heading button {
+            background: none;
+            border: none;
+            color: var(--pink);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+            padding-bottom: 15px;
+        }
+
+        .filter-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--dark-gray);
+        }
+
+        .price-range {
+            padding: 10px 0;
+        }
+
+        .price-inputs {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .price-inputs input {
+            width: 45%;
+            padding: 8px;
+            border: 1px solid var(--light-pink);
+            border-radius: 4px;
+        }
+
+        .price-slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        /* filter */
+        .category-item {
+             list-style: none;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .category-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        footer {
+            background-color: #f9f9f9;
+        }
+        
+        .footer-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .footer-link {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .footer-link:hover {
+            color: var(--meesho-pink);
+        }
+        
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #333;
+        }
+        
+        .app-download img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .search-bar {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .category-menu {
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            
+            .supplier-section {
+                overflow-x: auto;
+            }
+        }
+        /*  */
+        .view-details-btn, .add-to-cart, .buy-now-btn {
+            padding: 8px 0;
+            border-radius: 4px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .view-details-btn {
+            background-color: var(--light-pink);
+            color: var(--pink);
+            border: 1px solid var(--pink);
+        }
+
+        .add-to-cart {
+            background: linear-gradient(to right, var(--pink), var(--orange));
+            color: white;
+            border: none;
+        }
+
+        .buy-now-btn {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+        }
+        
+    </style>
+     
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <!-- Top Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="/api/placeholder/150/40" alt="Meesho Logo" height="40">
+                </a>
+                
+                <!-- Search Bar -->
+                <div class="search-bar d-flex align-items-center py-2 px-3 flex-grow-1 mx-lg-4">
+                    <i class="fas fa-search me-2"></i>
+                    <input type="text" class="form-control border-0 shadow-none" placeholder="Try Saree, Kurti or Search by Product Code">
+                </div>
+                
+                <!-- Navbar Toggle -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#">
+                                <div class="text-center">
+                                    <i class="fas fa-mobile-alt d-block mb-1"></i>
+                                    <span>Download App</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#">
+                                <div class="text-center">
+                                    <i class="fas fa-store d-block mb-1"></i>
+                                    <span>Become a Supplier</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#">
+                                <div class="text-center position-relative">
+                                    <i class="fas fa-user d-block mb-1"></i>
+                                    <span>Profile</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#">
+                                <div class="text-center position-relative">
+                                    <i class="fas fa-heart d-block mb-1"></i>
+                                    <span>Wishlist</span>
+                                    <span class="badge-notification">2</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#">
+                                <div class="text-center position-relative">
+                                    <i class="fas fa-shopping-cart d-block mb-1"></i>
+                                    <span>Cart</span>
+                                    <span class="badge-notification">3</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Category Menu -->
+        <div class="category-menu bg-white py-2">
+            <div class="container">
+                <ul class="nav overflow-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Women Ethnic</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Women Western</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Men</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Kids</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home & Kitchen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Beauty & Health</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Jewellery & Accessories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Bags & Footwear</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Electronics</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero-banner py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h1 class="mb-3">Lowest Prices <br>Best Quality Shopping</h1>
+                        <div class="d-flex flex-wrap mb-4">
+                            <div class="me-4 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-white p-2 me-2">
+                                        <i class="fas fa-truck text-primary"></i>
+                                    </div>
+                                    <span>Free Delivery</span>
+                                </div>
+                            </div>
+                            <div class="me-4 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-white p-2 me-2">
+                                        <i class="fas fa-rupee-sign text-primary"></i>
+                                    </div>
+                                    <span>Cash on Delivery</span>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-white p-2 me-2">
+                                        <i class="fas fa-undo text-primary"></i>
+                                    </div>
+                                    <span>Easy Returns</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn download-app-btn px-4 py-2">
+                            <i class="fas fa-mobile-alt me-2"></i>
+                            Download the Meesho App
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/api/placeholder/500/350" alt="Meesho Banner" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Top Categories -->
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-4">Top Categories to Choose From</h2>
+                <div class="row">
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Women Ethnic</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Women Western</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Men</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Kids</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Home & Kitchen</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-2 mb-4">
+                        <div class="category-item">
+                            <img src="/api/placeholder/80/80" alt="Category">
+                            <p class="mt-2 mb-0">Beauty & Health</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- filter  -->
+        
+        <!-- Products Section -->
+        <section class="py-4 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-4">
+ <div class="product-section">
+                <div class="filter-panel">
+                    <div class="filter-heading">
+                        <span>Filters</span>
+                        <button id="clear-filters">Clear All</button>
+                    </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Price Range</h3>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" id="min-price" placeholder="Min" min="0">
+                                <span>to</span>
+                                <input type="number" id="max-price" placeholder="Max">
+                            </div>
+                            <input type="range" class="price-slider" min="0" max="5000" value="2500" id="price-range">
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Category</h3>
+                        <ul class="category-list">
+                            <li>
+                                <label>
+                                    <input type="checkbox" checked> Women
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> Men
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> Kids
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> Home & Kitchen
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> Beauty & Health
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="filter-group">
+                        <h3 class="filter-title">Rating</h3>
+                        <ul class="category-list">
+                            <li>
+                                <label>
+                                    <input type="checkbox"> 4★ & above
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> 3★ & above
+                                </label>
+                            </li>
+                            <li>
+                                <label>
+                                    <input type="checkbox"> 2★ & above
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="add-to-cart" id="apply-filters">Apply Filters</button>
+                </div>
+                <div class="product-grid" id="product-grid">
+                    <!-- Products will be loaded here via JavaScript -->
+                </div>
+            </div>
+                    </div>
+                    <div class="col-md-9 col-8">
+ <h2 class="mb-4">Products For You</h2>
+                <div class="row">
+                    <!-- Product 1 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Women's Floral Printed Kurta</h5>
+                                <p class="product-price mb-1">₹349 <span class="original-price">₹1299</span> <span class="discount">73% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.2</span>
+                                    <span class="text-muted small">42 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 2 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Men's Solid Cotton T-shirt</h5>
+                                <p class="product-price mb-1">₹249 <span class="original-price">₹699</span> <span class="discount">64% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.0</span>
+                                    <span class="text-muted small">124 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 3 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Designer Saree with Blouse Piece</h5>
+                                <p class="product-price mb-1">₹499 <span class="original-price">₹1499</span> <span class="discount">67% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.5</span>
+                                    <span class="text-muted small">213 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 4 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Kids' Casual Wear Set</h5>
+                                <p class="product-price mb-1">₹399 <span class="original-price">₹999</span> <span class="discount">60% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.3</span>
+                                    <span class="text-muted small">87 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 5 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Home Decor Wall Clock</h5>
+                                <p class="product-price mb-1">₹299 <span class="original-price">₹799</span> <span class="discount">63% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.1</span>
+                                    <span class="text-muted small">156 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 6 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Women's Trendy Handbag</h5>
+                                <p class="product-price mb-1">₹599 <span class="original-price">₹1599</span> <span class="discount">63% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.7</span>
+                                    <span class="text-muted small">245 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 7 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Men's Casual Shoes</h5>
+                                <p class="product-price mb-1">₹699 <span class="original-price">₹1799</span> <span class="discount">61% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.4</span>
+                                    <span class="text-muted small">183 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Product 8 -->
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card product-card h-100">
+                            <img src="/api/placeholder/300/400" class="card-img-top" alt="Product">
+                            <div class="card-body">
+                                <h5 class="card-title">Face Serum & Moisturizer Combo</h5>
+                                <p class="product-price mb-1">₹449 <span class="original-price">₹999</span> <span class="discount">55% off</span></p>
+                                <span class="free-delivery">Free Delivery</span>
+                                <div class="d-flex align-items-center mt-2">
+                                    <span class="rating me-2"><i class="fas fa-star fa-sm"></i> 4.6</span>
+                                    <span class="text-muted small">217 Reviews</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-dark px-4 py-2">View All Products</button>
+                </div>
+                    </div>
+                </div>
+                
+                <!--  -->
+               
+            </div>
+        </section>
+        
+        <!-- Supplier Section -->
+        <section class="supplier-section py-5">
+            <div class="container">
+                <h2 class="mb-4">Top Suppliers</h2>
+                <div class="scrolling-wrapper pb-3">
+                    <!-- Supplier 1 -->
+                    <div class="supplier-card p-3 me-3" style="width: 280px;">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="/api/placeholder/60/60" class="rounded-circle me-3" alt="Supplier">
+                            <div>
+                                <h5 class="mb-1">Fashion World</h5>
+                                <p class="mb-0 small">Mumbai</p>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Supplier 2 -->
+                    <div class="supplier-card p-3 me-3" style="width: 280px;">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="/api/placeholder/60/60" class="rounded-circle me-3" alt="Supplier">
+                            <div>
+                                <h5 class="mb-1">Trendy Trends</h5>
+                                <p class="mb-0 small">Delhi</p>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Supplier 3 -->
+                    <div class="supplier-card p-3 me-3" style="width: 280px;">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="/api/placeholder/60/60" class="rounded-circle me-3" alt="Supplier">
+                            <div>
+                                <h5 class="mb-1">Home Solutions</h5>
+                                <p class="mb-0 small">Jaipur</p>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Supplier 4 -->
+                    <div class="supplier-card p-3" style="width: 280px;">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="/api/placeholder/60/60" class="rounded-circle me-3" alt="Supplier">
+                            <div>
+                                <h5 class="mb-1">Kids Store</h5>
+                                <p class="mb-0 small">Bangalore</p>
+                            </div>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                            <div class="col-6">
+                                <img src="/api/placeholder/120/120" class="img-fluid rounded" alt="Product">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Become a Reseller Section -->
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h2 class="mb-3">Become a Reseller and</h2>
+                        <h2 class="mb-4 text-primary">Start Your Online Business with Zero Investment</h2>
+                        <div class="d-flex mb-4">
+                            <div class="app-download">
+                                <a href="#"><img src="/api/placeholder/150/50" alt="Google Play"></a>
+                            </div>
+                            <div class="app-download">
+                                <a href="#"><img src="/api/placeholder/150/50" alt="App Store"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <img src="/api/placeholder/500/400" alt="Become a Reseller" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-5">
+        <div class="container">
+            <div class="
